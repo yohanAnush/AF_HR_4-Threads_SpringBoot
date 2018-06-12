@@ -17,4 +17,6 @@ public interface LeaveService {
     // the leave may end after the time period we are considering, but as long as,
     // the leave start within the time period we consider, it's counted.
     public List<String> getEmployeesOnLeave(Date start, Date end);
+
+    public boolean issueLeave(String eid, Date start, Date end);
 }
