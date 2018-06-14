@@ -13,9 +13,13 @@ public interface AttendanceService {
 
     public List<Attendance> getAllAttendanceOfEmployeeDuring(Date start, Date end, String eid);
 
+    public Attendance getAttendanceOfEmployeeOn(String eid, Date date);
+
     public List<String> getAllEmployeesAttendedOn(Date date);
 
     public int getNumberOfDaysAttendedOnMonth(String eid, int year, int month);
 
     public void addAttendanceEntry(Attendance a);
+
+    public void deleteAttendaceOfEmployeeOn(String eid, Date date);
 }

@@ -1,5 +1,6 @@
 package com.sliit.se.HR_Spring.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -14,7 +15,6 @@ public class Attendance {
 
 
     public Attendance() {}
-
 
     public String getEid() {
         return eid;

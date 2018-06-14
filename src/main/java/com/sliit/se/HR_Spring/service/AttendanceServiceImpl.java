@@ -34,6 +34,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    public Attendance getAttendanceOfEmployeeOn(String eid, Date date) {
+        return attendanceRepo.getAttendanceByEidAndDate(eid, date);
+    }
+
+    @Override
     public List<String> getAllEmployeesAttendedOn(Date date) {
         List<Attendance> attendanceList = attendanceRepo.getAttendancesByDate(date);
         List<String> employeeIds = new ArrayList<>();
@@ -64,5 +69,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public void addAttendanceEntry(Attendance a) {
         attendanceRepo.save(a);
+    }
+
+    @Override
+    public void deleteAttendaceOfEmployeeOn(String eid, Date date) {
+        attendanceRepo.deleteAttendanceByEidAndDate(eid, date);
     }
 }

@@ -73,11 +73,50 @@ public class AttendanceController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity addEntry(@RequestBody Attendance a) {
-        attendanceService.addAttendanceEntry(a);
+    @RequestMapping(value = "emp/{eid}/checkin", method = RequestMethod.POST)
+    public ResponseEntity addEntry(@PathVariable("eid") String eid, @RequestBody Attendance a) {
 
-        return new ResponseEntity(Utils.getResponseJsonString(true, null), HttpStatus.CREATED);
+        Attendance existing = attendanceService.getAttendanceOfEmployeeOn(eid, a.getDate());
+        if (existing == null) {
+            System.out.println(existing);
+            // since the employee is only checking in, we keep the time_out field empty.
+            a.setTime_out("");
+            attendanceService.addAttendanceEntry(a);
+
+            return new ResponseEntity(Utils.getResponseJsonString(true, null), HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity(Utils.getResponseJsonString(false, "Employee " + eid + " has already checked in for " + a.getDate()), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "emp/{eid}/checkout", method = RequestMethod.POST)
+    public ResponseEntity checkout(@PathVariable("eid") String eid, @RequestBody Map<String, Object> payload) {
+        if (payload.containsKey("time_out")) {
+            // out of all the entries we have for the given user, we take the one that,
+            // has an empty time_out field.
+            for (Attendance a: attendanceService.getAllAttendanceOfEmployee(eid)) {
+                if (a.getTime_out() == null || a.getTime_out().equals("")) {
+                    // we create a new object with time_out included, then delete the old one and save the new one.
+                    // TODO basically the old entry should be updated with the time_out value, but i can't seem to figuire out a way
+                    // TODO to do that, so im adding the old info to a new object, add the time_out to the new object as well, and then
+                    // TODO delete the old one from db, add the new one, which is sorta too much work so if a better way is found, please update.
+                    Attendance newA = new Attendance();
+                    newA.setDate(a.getDate());
+                    newA.setEid(a.getEid());
+                    newA.setTime_in(a.getTime_in());
+                    newA.setTime_out(payload.get("time_out").toString());
+
+                    attendanceService.deleteAttendaceOfEmployeeOn(a.getEid(), a.getDate());     // delete the old entry.
+                    attendanceService.addAttendanceEntry(newA);     // add the new entry.
+
+                    return new ResponseEntity(Utils.getResponseJsonString(true, "Employee " + a.getEid() + " checked out."), HttpStatus.OK);
+                }
+            }
+
+            return new ResponseEntity(Utils.getResponseJsonString(false, "Employee " + eid + " has already checked out"), HttpStatus.OK);
+        }
+
+        return new ResponseEntity(Utils.getResponseJsonString(false, "Request body should contain time_out parameter"), HttpStatus.OK);
     }
 
 }

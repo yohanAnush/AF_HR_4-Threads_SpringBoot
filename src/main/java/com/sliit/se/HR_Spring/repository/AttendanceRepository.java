@@ -13,11 +13,13 @@ public interface AttendanceRepository extends MongoRepository<Attendance, String
     List<Attendance> getAllByEid(String eid);
 
     // attendance entry of a given employee on a given date.
-    Attendance getAttendancesByEidAndDate(String eid, Date date);
+    Attendance getAttendanceByEidAndDate (String eid, Date date);
 
     // attendance entries of a given employee within a given time period.
     List<Attendance> getAttendancesByDateBetweenAndEid(Date start, Date end, String eid);
 
     // attendance entries of all employees who showed up for work on a given date.
     List<Attendance> getAttendancesByDate(Date date);
+
+    void deleteAttendanceByEidAndDate(String eid, Date date);
 }
