@@ -7,8 +7,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.utilities.Interval;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
