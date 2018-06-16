@@ -38,6 +38,8 @@ public class Utils {
      *      date should be in the format of yyyy-MM-dd
      */
     public static Date getDateFromString(String dateStr) {
+
+        return new Date(dateStr);/*
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");     // mm is minutes, MM is month.
         try {
             return df.parse(dateStr);
@@ -45,5 +47,6 @@ public class Utils {
             e.printStackTrace();
             return new Date();
         }
+        */
     }
 }

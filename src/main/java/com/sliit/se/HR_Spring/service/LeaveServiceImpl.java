@@ -29,18 +29,24 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<String> getEmployeesOnLeave(Date date) {
-        List<Leave> leaveList = leaveRepo.findAllByStartAfterAndEndBefore(date, date);
-        List<String> eidList = new ArrayList<>();
+    public List<Leave> getEmployeesOnLeave(Date date) {
+        //List<Leave> leaveList =
+         return leaveRepo.findAllByStartAfterAndEndBefore(date, date);
+        //List<String> eidList = new ArrayList<>();
 
-        leaveList.forEach(leave -> eidList.add(leave.getEid()));
+        //leaveList.forEach(leave -> eidList.add(leave.getEid()));
 
-        return eidList;
+        //return eidList;
     }
 
     @Override
     public List<String> getEmployeesOnLeave(Date start, Date end) {
         return null;
+    }
+
+    @Override
+    public List<Leave> getAllEntries() {
+        return leaveRepo.findAll();
     }
 
     @Override
@@ -51,6 +57,11 @@ public class LeaveServiceImpl implements LeaveService {
         int potentialLeaveDays = getDateDifferent(start, end);
 
         return (potentialLeaveDays < 10 && potentialLeaveDays > 0);
+    }
+
+    @Override
+    public void saveLeave(Leave l) {
+        leaveRepo.save(l);
     }
 
     private int getDateDifferent(Date start, Date end) {
